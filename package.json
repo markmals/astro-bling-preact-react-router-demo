@@ -4,6 +4,8 @@
     "version": "0.0.1",
     "scripts": {
         "dev": "astro dev",
+        "test": "vitest run",
+        "test:dev": "vitest dev",
         "start": "astro dev",
         "build": "astro build",
         "preview": "astro preview",
@@ -26,10 +28,12 @@
     },
     "devDependencies": {
         "@astrojs/node": "^5.1.1",
+        "@preact/preset-vite": "^2.5.0",
         "@prefresh/vite": "^2.2.9",
         "@remix-run/dev": "^1.15.0",
         "@tanstack/bling": "^0.5.0",
-        "@types/sort-by": "^1.2.0"
+        "@types/sort-by": "^1.2.0",
+        "vitest": "^0.30.1"
     },
     "prettier": {
         "printWidth": 100,

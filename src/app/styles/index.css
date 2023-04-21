@@ -41,6 +41,7 @@ button {
 button {
     color: #3992ff;
     font-weight: 500;
+    cursor: pointer;
 }
 
 textarea:hover,
@@ -63,6 +64,7 @@ button:active {
     display: flex;
     align-items: center;
     margin-top: 0.25rem;
+    margin-bottom: 0;
 }
 #contact h1 form button {
     box-shadow: none;

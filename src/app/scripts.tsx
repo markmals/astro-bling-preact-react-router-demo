@@ -1,4 +1,5 @@
 export function Scripts() {
+    // TODO: Implement manifestContext once it's available in Astro RC
     // const manifest = useContext(manifestContext)
     // return import.meta.env.DEV ? (
     //     <>

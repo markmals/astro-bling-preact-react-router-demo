@@ -28,7 +28,7 @@ export async function action({ request, params }: ActionFunctionArgs) {
     })
 }
 
-export default function Contact() {
+export default function ViewContact() {
     const { contact } = useLoaderData() as { contact: Contact }
 
     return (
