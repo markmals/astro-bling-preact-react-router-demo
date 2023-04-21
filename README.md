@@ -1,47 +1,16 @@
-# Astro Starter Kit: Minimal
+# Remix Flat Routes for Vite `import.meta.glob` & React Router on Astro
 
-```
-npm create astro@latest -- --template minimal
-```
+This repo contains an implementation of the [React Router 6.4 tutorial](https://reactrouter.com/en/main/start/tutorial) on top of [Astro](https://docs.astro.build/en/getting-started/) & [Bling](https://github.com/TanStack/bling).
 
-[![Open in StackBlitz](https://developer.stackblitz.com/img/open_in_stackblitz.svg)](https://stackblitz.com/github/withastro/astro/tree/latest/examples/minimal)
-[![Open with CodeSandbox](https://assets.codesandbox.io/github/button-edit-lime.svg)](https://codesandbox.io/p/sandbox/github/withastro/astro/tree/latest/examples/minimal)
-[![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/withastro/astro?devcontainer_path=.devcontainer/minimal/devcontainer.json)
+The goal of this project is to create a file system router using [Vite's `import.meta.glob`](https://vitejs.dev/guide/features.html#glob-import), matching the [Remix flat routing convention](http://remix.run/docs/en/main/file-conventions/route-files-v2) for Preact & React Router (similar to how [Analog's file system router](https://github.com/analogjs/analog/tree/main/packages/router) is implemented).
 
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
+The relevant files are:
 
-## 🚀 Project Structure
+-   `/src/app/get-routes.tsx`: The file system route configurator implementation
+-   `/src/app/get-routes.text.tsx`: Tests for the file system route configurator
 
-Inside of your Astro project, you'll see the following folders and files:
+## Tests
 
-```
-/
-├── public/
-├── src/
-│   └── pages/
-│       └── index.astro
-└── package.json
-```
+You can run `npm test` to run the tests or `npm run test:dev` to run the tests in watch mode. If you would like to view the test results within VS Code, you can install the [Vitest VS Code extension](https://marketplace.visualstudio.com/items?itemName=ZixuanChen.vitest-explorer). This will allow you to run your tests in watch mode in the editor and have instant feedback whenever you change code that makes the test fail:
 
-Astro looks for `.astro` or `.md` files in the `src/pages/` directory. Each page is exposed as a route based on its file name.
-
-There's nothing special about `src/components/`, but that's where we like to put any Astro/React/Vue/Svelte/Preact components.
-
-Any static assets, like images, can be placed in the `public/` directory.
-
-## 🧞 Commands
-
-All commands are run from the root of the project, from a terminal:
-
-| Command                | Action                                           |
-| :--------------------- | :----------------------------------------------- |
-| `npm install`          | Installs dependencies                            |
-| `npm run dev`          | Starts local dev server at `localhost:3000`      |
-| `npm run build`        | Build your production site to `./dist/`          |
-| `npm run preview`      | Preview your build locally, before deploying     |
-| `npm run astro ...`    | Run CLI commands like `astro add`, `astro check` |
-| `npm run astro --help` | Get help using the Astro CLI                     |
-
-## 👀 Want to learn more?
-
-Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
+![Vitest VS Code extension watch mode](https://i.ibb.co/YRhJj9f/Screen-Recording-2022-05-21-at-20-09-20.gif)
