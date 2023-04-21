@@ -1,4 +1,5 @@
-import { ActionFunctionArgs, redirect } from "react-router-dom"
+import type { ActionFunctionArgs } from "react-router-dom"
+import { redirect } from "react-router-dom"
 import { deleteContact } from "~/lib/contacts"
 
 export async function action({ params }: ActionFunctionArgs) {

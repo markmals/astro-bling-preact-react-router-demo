@@ -275,13 +275,13 @@ i {
     color: hsl(224, 98%, 58%);
 }
 
-#contact a[href*="twitter"] {
+#contact a[href*="mastodon"] {
     display: flex;
     font-size: 1.5rem;
     color: #3992ff;
     text-decoration: none;
 }
-#contact a[href*="twitter"]:hover {
+#contact a[href*="mastodon"]:hover {
     text-decoration: underline;
 }
 

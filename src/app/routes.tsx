@@ -1,43 +1,45 @@
 import type { RouteObject } from "react-router-dom"
-import { ErrorPage } from "./error-page"
-import Root from "./root"
-import Index, { action as indexAction, loader as indexLoader } from "./routes/_index"
-import Placeholder from "./routes/_index._placeholder"
+import Root, { action as layoutAction, ErrorBoundary as RootErrorBoundary } from "./root"
+import ContactsLayout, { loader as layoutLoader } from "./routes/_contacts"
+import Index from "./routes/_contacts._index"
 import ViewContact, {
     action as contactAction,
     loader as contactLoader,
-} from "./routes/_index.contact.$contactId"
-import { ErrorBoundary, action as destroyAction } from "./routes/_index.contact.$contactId.destroy"
-import EditContact, { action as editAction } from "./routes/_index.contact.$contactId.edit"
+} from "./routes/_contacts.contact.$contactId"
+import {
+    action as destroyAction,
+    ErrorBoundary as DestroyErrorBoundary,
+} from "./routes/_contacts.contact.$contactId_.destroy"
+import EditContact, { action as editAction } from "./routes/_contacts.contact.$contactId_.edit"
 
 export const routes: RouteObject[] = [
     {
         element: <Root />,
-        errorElement: <ErrorPage />,
+        errorElement: <RootErrorBoundary />,
         children: [
             {
                 path: "/",
-                element: <Index />,
-                loader: indexLoader,
-                action: indexAction,
+                element: <ContactsLayout />,
+                loader: layoutLoader,
+                action: layoutAction,
                 children: [
-                    { index: true, element: <Placeholder /> },
+                    { index: true, element: <Index /> },
                     {
-                        path: "contacts/:contactId",
+                        path: "contact/:contactId",
                         element: <ViewContact />,
                         loader: contactLoader,
                         action: contactAction,
                     },
                     {
-                        path: "contacts/:contactId/edit",
+                        path: "contact/:contactId/edit",
                         element: <EditContact />,
                         loader: contactLoader,
                         action: editAction,
                     },
                     {
-                        path: "contacts/:contactId/destroy",
+                        path: "contact/:contactId/destroy",
                         action: destroyAction,
-                        errorElement: <ErrorBoundary />,
+                        errorElement: <DestroyErrorBoundary />,
                     },
                 ],
             },

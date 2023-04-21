@@ -1,8 +1,9 @@
 import type { ComponentChildren } from "preact"
-import { Outlet } from "react-router-dom"
+import { Outlet, json, useRouteError } from "react-router-dom"
 import { Scripts } from "~/scripts"
+import { createContact } from "./lib/contacts"
 
-export function RootLayout({ children }: { children: ComponentChildren }) {
+function RootLayout({ children }: { children: ComponentChildren }) {
     return (
         <html lang="en">
             <head>
@@ -19,10 +20,32 @@ export function RootLayout({ children }: { children: ComponentChildren }) {
     )
 }
 
-export default function Root() {
+export async function action() {
+    let contact = await createContact()
+    return json({ contact })
+}
+
+export default function App() {
     return (
         <RootLayout>
             <Outlet />
+        </RootLayout>
+    )
+}
+
+export function ErrorBoundary() {
+    const error = useRouteError() as any
+    console.error(error)
+
+    return (
+        <RootLayout>
+            <div id="error-page">
+                <h1>Oops!</h1>
+                <p>Sorry, an unexpected error has occurred.</p>
+                <p>
+                    <i>{error.statusText || error.message}</i>
+                </p>
+            </div>
         </RootLayout>
     )
 }

@@ -8,7 +8,7 @@ export interface Contact {
     first: string
     last: string
     avatar: string
-    twitter: string
+    mastodon: string
     notes: string
     favorite: boolean
 }

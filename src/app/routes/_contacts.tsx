@@ -1,4 +1,4 @@
-import { useEffect } from "preact/hooks"
+import { useEffect } from "react"
 import {
     Form,
     LoaderFunctionArgs,
@@ -6,40 +6,35 @@ import {
     Outlet,
     json,
     useLoaderData,
+    useNavigate,
     useNavigation,
     useRevalidator,
     useSubmit,
 } from "react-router-dom"
-import { Contact, createContact, getContacts } from "~/lib/contacts"
+import type { Contact } from "~/lib/contacts"
+import { getContacts } from "~/lib/contacts"
 
 export async function loader({ request }: LoaderFunctionArgs) {
-    const url = new URL(request.url)
-    const q = url.searchParams.get("q")
-    const contacts = await getContacts(q)
+    let url = new URL(request.url)
+    let q = url.searchParams.get("q") ?? undefined
+    let contacts = await getContacts(q)
     return json({ contacts, q })
 }
 
-export async function action() {
-    const contact = await createContact()
-    return json({ contact })
-}
+export default function ContactsLayout() {
+    let navigation = useNavigation()
+    let { contacts, q } = useLoaderData() as { contacts: Contact[]; q: string | null }
+    let submit = useSubmit()
+    let navigate = useNavigate()
 
-export default function Index() {
-    const navigation = useNavigation()
-    const { contacts, q } = useLoaderData() as { contacts: Contact[]; q: string }
-    const revalidator = useRevalidator()
-    const submit = useSubmit()
+    let revalidator = useRevalidator()
+    useEffect(() => revalidator.revalidate(), [])
 
-    useEffect(() => {
-        revalidator.revalidate()
-    }, [])
-
-    const searching =
-        navigation.location && new URLSearchParams(navigation.location.search).has("q")
+    let searching = navigation.location && new URLSearchParams(navigation.location.search).has("q")
 
     useEffect(() => {
         if (document) {
-            ;(document.getElementById("q") as HTMLInputElement).value = q
+            document.querySelector<HTMLInputElement>("#q")!.value = q ?? ""
         }
     }, [q])
 
@@ -50,22 +45,25 @@ export default function Index() {
                 <div>
                     <Form id="search-form" role="search">
                         <input
-                            id="q"
                             aria-label="Search contacts"
+                            class={searching ? "loading" : ""}
+                            defaultValue={q ?? undefined}
+                            id="q"
+                            name="q"
+                            onChange={event => {
+                                // Remove empty query params when value is empty
+                                if (!event.currentTarget.value) {
+                                    navigate("/")
+                                    return
+                                }
+                                let isFirstSearch = q == null
+                                submit(event.currentTarget.form, { replace: !isFirstSearch })
+                            }}
                             placeholder="Search"
                             type="search"
-                            name="q"
-                            defaultValue={q}
-                            onChange={event => {
-                                const isFirstSearch = q == null
-                                submit(event.currentTarget.form, {
-                                    replace: !isFirstSearch,
-                                })
-                            }}
-                            class={searching ? "loading" : ""}
                         />
-                        <div id="search-spinner" aria-hidden hidden={!searching} />
-                        <div className="sr-only" aria-live="polite"></div>
+                        <div aria-hidden hidden={!searching} id="search-spinner" />
+                        <div aria-live="polite" class="sr-only"></div>
                     </Form>
                     <Form method="post">
                         <button type="submit">New</button>
@@ -77,7 +75,6 @@ export default function Index() {
                             {contacts.map(contact => (
                                 <li key={contact.id}>
                                     <NavLink
-                                        to={`contacts/${contact.id}`}
                                         className={({
                                             isActive,
                                             isPending,
@@ -85,6 +82,7 @@ export default function Index() {
                                             isActive: boolean
                                             isPending: boolean
                                         }) => (isActive ? "active" : isPending ? "pending" : "")}
+                                        to={`contact/${contact.id}`}
                                     >
                                         {contact.first || contact.last ? (
                                             <>
@@ -105,7 +103,7 @@ export default function Index() {
                     )}
                 </nav>
             </div>
-            <div id="detail" class={navigation.state === "loading" ? "loading" : ""}>
+            <div class={navigation.state === "loading" ? "loading" : ""} id="detail">
                 <Outlet />
             </div>
         </div>

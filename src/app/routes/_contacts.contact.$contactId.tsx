@@ -1,15 +1,11 @@
-import {
-    ActionFunctionArgs,
-    Form,
-    LoaderFunctionArgs,
-    json,
-    useFetcher,
-    useLoaderData,
-} from "react-router-dom"
-import { Contact, getContact, updateContact } from "~/lib/contacts"
+import type { JSXInternal } from "preact/src/jsx"
+import type { ActionFunctionArgs, LoaderFunctionArgs } from "react-router-dom"
+import { Form, json, useFetcher, useLoaderData } from "react-router-dom"
+import type { Contact } from "~/lib/contacts"
+import { getContact, updateContact } from "~/lib/contacts"
 
 export async function loader({ params }: LoaderFunctionArgs) {
-    const contact = await getContact(params.contactId)
+    const contact = await getContact(params.contactId!)
 
     if (!contact) {
         throw new Response("", {
@@ -28,13 +24,24 @@ export async function action({ request, params }: ActionFunctionArgs) {
     })
 }
 
+type SubmitEvent = JSXInternal.TargetedEvent<HTMLFormElement, Event>
+
 export default function ViewContact() {
     const { contact } = useLoaderData() as { contact: Contact }
+    let hasAvatar = !!contact.avatar
 
     return (
         <div id="contact">
             <div>
-                <img key={contact.avatar} src={contact.avatar} />
+                <img
+                    alt=""
+                    key={contact.avatar}
+                    src={
+                        hasAvatar
+                            ? contact.avatar
+                            : "https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png"
+                    }
+                />
             </div>
 
             <div>
@@ -49,10 +56,17 @@ export default function ViewContact() {
                     <Favorite favorite={contact.favorite!} />
                 </h1>
 
-                {contact.twitter && (
+                {contact.mastodon && (
                     <p>
-                        <a target="_blank" href={`https://twitter.com/${contact.twitter}`}>
-                            {contact.twitter}
+                        <a
+                            href={`https://mastodon.social/${contact.mastodon.replace(
+                                "@mastodon.social",
+                                ""
+                            )}`}
+                            rel="noreferrer"
+                            target="_blank"
+                        >
+                            {contact.mastodon}
                         </a>
                     </p>
                 )}
@@ -64,8 +78,8 @@ export default function ViewContact() {
                         <button type="submit">Edit</button>
                     </Form>
                     <Form
-                        method="post"
                         action="destroy"
+                        method="post"
                         onSubmit={(event: SubmitEvent) => {
                             if (!confirm("Please confirm you want to delete this record.")) {
                                 event.preventDefault()
@@ -90,9 +104,9 @@ function Favorite({ favorite }: { favorite: boolean }) {
     return (
         <fetcher.Form method="post">
             <button
+                aria-label={favorite ? "Remove from favorites" : "Add to favorites"}
                 name="favorite"
                 value={favorite ? "false" : "true"}
-                aria-label={favorite ? "Remove from favorites" : "Add to favorites"}
             >
                 {favorite ? "★" : "☆"}
             </button>
