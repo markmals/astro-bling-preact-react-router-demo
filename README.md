@@ -7,7 +7,7 @@ The goal of this project is to create a file system router using [Vite's `import
 The relevant files are:
 
 -   `/src/app/get-routes.tsx`: The file system route configurator implementation
--   `/src/app/get-routes.text.tsx`: Tests for the file system route configurator
+-   `/src/app/get-routes.test.tsx`: Tests for the file system route configurator
 
 ## Tests
 
@@ -50,7 +50,7 @@ As React Router routes:
                 path: "forgot-password"
                 element: <Forgot />
             },
-                        {
+            {
                 path: "login"
                 element: <Login />
             },
