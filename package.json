@@ -27,6 +27,7 @@
     "devDependencies": {
         "@astrojs/node": "^5.1.1",
         "@prefresh/vite": "^2.2.9",
+        "@remix-run/dev": "^1.15.0",
         "@tanstack/bling": "^0.5.0",
         "@types/sort-by": "^1.2.0"
     },

@@ -19,7 +19,7 @@ export function RootLayout({ children }: { children: ComponentChildren }) {
     )
 }
 
-export function Root() {
+export default function Root() {
     return (
         <RootLayout>
             <Outlet />
