@@ -1,11 +1,11 @@
 import type { JSXInternal } from "preact/src/jsx"
 import type { ActionFunctionArgs, LoaderFunctionArgs } from "react-router-dom"
 import { Form, json, useFetcher, useLoaderData } from "react-router-dom"
-import type { Contact } from "~/lib/contacts"
-import { getContact, updateContact } from "~/lib/contacts"
+import type { Contact } from "~/lib/contacts.server"
+import { getContact, updateContact } from "~/lib/contacts.server"
 
 export async function loader({ params }: LoaderFunctionArgs) {
-    const contact = await getContact(params.contactId!)
+    const contact = await getContact(parseInt(params.contactId!))
 
     if (!contact) {
         throw new Response("", {
@@ -19,7 +19,7 @@ export async function loader({ params }: LoaderFunctionArgs) {
 
 export async function action({ request, params }: ActionFunctionArgs) {
     let formData = await request.formData()
-    return updateContact(params.contactId!, {
+    return updateContact(parseInt(params.contactId!), {
         favorite: formData.get("favorite") === "true",
     })
 }

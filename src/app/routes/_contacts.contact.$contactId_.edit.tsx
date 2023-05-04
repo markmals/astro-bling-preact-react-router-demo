@@ -1,9 +1,9 @@
 import type { ActionFunctionArgs, LoaderFunctionArgs } from "react-router-dom"
 import { Form, json, redirect, useLoaderData, useNavigate } from "react-router-dom"
-import { Contact, getContact, updateContact } from "~/lib/contacts"
+import { Contact, getContact, updateContact } from "~/lib/contacts.server"
 
 export async function loader({ params }: LoaderFunctionArgs) {
-    const contact = await getContact(params.contactId!)
+    const contact = await getContact(parseInt(params.contactId!))
 
     if (!contact) {
         throw new Response("", {
@@ -18,7 +18,7 @@ export async function loader({ params }: LoaderFunctionArgs) {
 export async function action({ request, params }: ActionFunctionArgs) {
     let formData = await request.formData()
     let updates = Object.fromEntries(formData)
-    await updateContact(params.contactId!, updates)
+    await updateContact(parseInt(params.contactId!), updates)
     return redirect(`/contact/${params.contactId}`)
 }
 

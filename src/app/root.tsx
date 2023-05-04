@@ -1,7 +1,7 @@
 import type { ComponentChildren } from "preact"
 import { Outlet, json, useRouteError } from "react-router-dom"
 import { Scripts } from "~/scripts"
-import { createContact } from "./lib/contacts"
+import { createContact } from "./lib/contacts.server"
 
 function RootLayout({ children }: { children: ComponentChildren }) {
     return (

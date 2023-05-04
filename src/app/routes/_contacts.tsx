@@ -11,8 +11,8 @@ import {
     useRevalidator,
     useSubmit,
 } from "react-router-dom"
-import type { Contact } from "~/lib/contacts"
-import { getContacts } from "~/lib/contacts"
+import type { Contact } from "~/lib/contacts.server"
+import { getContacts } from "~/lib/contacts.server"
 
 export async function loader({ request }: LoaderFunctionArgs) {
     let url = new URL(request.url)

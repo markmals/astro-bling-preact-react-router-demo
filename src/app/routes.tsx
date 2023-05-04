@@ -11,6 +11,7 @@ import {
     ErrorBoundary as DestroyErrorBoundary,
 } from "./routes/_contacts.contact.$contactId_.destroy"
 import EditContact, { action as editAction } from "./routes/_contacts.contact.$contactId_.edit"
+import { server$ } from "@tanstack/bling"
 
 export const routes: RouteObject[] = [
     {
@@ -20,25 +21,25 @@ export const routes: RouteObject[] = [
             {
                 path: "/",
                 element: <ContactsLayout />,
-                loader: layoutLoader,
-                action: layoutAction,
+                loader: server$(layoutLoader),
+                action: server$(async args => await layoutAction()),
                 children: [
                     { index: true, element: <Index /> },
                     {
                         path: "contact/:contactId",
                         element: <ViewContact />,
-                        loader: contactLoader,
-                        action: contactAction,
+                        loader: server$(contactLoader),
+                        action: server$(contactAction),
                     },
                     {
                         path: "contact/:contactId/edit",
                         element: <EditContact />,
-                        loader: contactLoader,
-                        action: editAction,
+                        loader: server$(contactLoader),
+                        action: server$(editAction),
                     },
                     {
                         path: "contact/:contactId/destroy",
-                        action: destroyAction,
+                        action: server$(destroyAction),
                         errorElement: <DestroyErrorBoundary />,
                     },
                 ],

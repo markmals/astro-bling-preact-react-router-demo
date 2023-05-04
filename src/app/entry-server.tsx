@@ -4,6 +4,7 @@ import type { APIContext } from "astro"
 import renderToString from "preact-render-to-string"
 import { StaticRouterProvider, createStaticRouter } from "react-router-dom/server"
 import { routes } from "./routes"
+import serveStatic from "./lib/serve-static"
 
 addDeserializer({
     apply: req => req === "$request",
@@ -11,6 +12,12 @@ addDeserializer({
 })
 
 export const requestHandler = async ({ request }: APIContext) => {
+    // FIXME: This isn't working, why is it requesting /favicon.ico???
+    if (new URL(request.url).pathname === "/favicon.ico") {
+        const _static = serveStatic("public")
+        return await _static(request)
+    }
+
     if (hasHandler(new URL(request.url).pathname)) {
         return await handleFetch$({ request })
     }

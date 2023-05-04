@@ -1,9 +1,9 @@
 import type { ActionFunctionArgs } from "react-router-dom"
 import { redirect } from "react-router-dom"
-import { deleteContact } from "~/lib/contacts"
+import { deleteContact } from "~/lib/contacts.server"
 
 export async function action({ params }: ActionFunctionArgs) {
-    await deleteContact(params.contactId!)
+    await deleteContact(parseInt(params.contactId!))
     return redirect("/")
 }
 
