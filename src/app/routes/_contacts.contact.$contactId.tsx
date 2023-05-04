@@ -19,9 +19,11 @@ export async function loader({ params }: LoaderFunctionArgs) {
 
 export async function action({ request, params }: ActionFunctionArgs) {
     let formData = await request.formData()
-    return updateContact(parseInt(params.contactId!), {
-        favorite: formData.get("favorite") === "true",
-    })
+    return json(
+        updateContact(parseInt(params.contactId!), {
+            favorite: formData.get("favorite") === "true",
+        })
+    )
 }
 
 type SubmitEvent = JSXInternal.TargetedEvent<HTMLFormElement, Event>

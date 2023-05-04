@@ -13,10 +13,12 @@ addDeserializer({
 
 export const requestHandler = async ({ request }: APIContext) => {
     // FIXME: This isn't working, why is it requesting /favicon.ico???
-    if (new URL(request.url).pathname === "/favicon.ico") {
-        const _static = serveStatic("public")
-        return await _static(request)
-    }
+    // if (new URL(request.url).pathname === "/favicon.ico") {
+    //     const _static = serveStatic("public")
+    //     return await _static(request)
+    // }
+
+    console.log(new URL(request.url).toString())
 
     if (hasHandler(new URL(request.url).pathname)) {
         return await handleFetch$({ request })

@@ -1,9 +1,10 @@
+import { server$ } from "@tanstack/bling"
 import type { ActionFunctionArgs } from "react-router-dom"
 import { redirect } from "react-router-dom"
 import { deleteContact } from "~/lib/contacts.server"
 
 export async function action({ params }: ActionFunctionArgs) {
-    await deleteContact(parseInt(params.contactId!))
+    server$(async () => await deleteContact(parseInt(params.contactId!)))
     return redirect("/")
 }
 

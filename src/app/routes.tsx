@@ -22,7 +22,7 @@ export const routes: RouteObject[] = [
                 path: "/",
                 element: <ContactsLayout />,
                 loader: server$(layoutLoader),
-                action: server$(async args => await layoutAction()),
+                action: server$(args => layoutAction()),
                 children: [
                     { index: true, element: <Index /> },
                     {
@@ -35,11 +35,11 @@ export const routes: RouteObject[] = [
                         path: "contact/:contactId/edit",
                         element: <EditContact />,
                         loader: server$(contactLoader),
-                        action: server$(editAction),
+                        action: editAction,
                     },
                     {
                         path: "contact/:contactId/destroy",
-                        action: server$(destroyAction),
+                        action: destroyAction,
                         errorElement: <DestroyErrorBoundary />,
                     },
                 ],

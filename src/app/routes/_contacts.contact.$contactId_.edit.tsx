@@ -1,3 +1,4 @@
+import { server$ } from "@tanstack/bling"
 import type { ActionFunctionArgs, LoaderFunctionArgs } from "react-router-dom"
 import { Form, json, redirect, useLoaderData, useNavigate } from "react-router-dom"
 import { Contact, getContact, updateContact } from "~/lib/contacts.server"
@@ -16,9 +17,12 @@ export async function loader({ params }: LoaderFunctionArgs) {
 }
 
 export async function action({ request, params }: ActionFunctionArgs) {
-    let formData = await request.formData()
-    let updates = Object.fromEntries(formData)
-    await updateContact(parseInt(params.contactId!), updates)
+    server$(async () => {
+        let formData = await request.formData()
+        let updates = Object.fromEntries(formData)
+        await updateContact(parseInt(params.contactId!), updates)
+    })
+
     return redirect(`/contact/${params.contactId}`)
 }
 
